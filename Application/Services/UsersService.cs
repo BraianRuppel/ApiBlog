@@ -21,7 +21,15 @@ namespace Services
 
         public async Task<Users> AddUser(Users user, Guid rolId)
         {
-            var userRol = await _rolesRepository.GetRolById(rolId);
+            var users = _usersRepository.GetUsers();
+
+            foreach (Users u in users.Result)//Validacion de nombre en uso
+            {
+                if (u.User == user.User)
+                    throw new Exception("El nombre ya esta en uso");
+            }
+
+            var userRol = await _rolesRepository.GetRolById(rolId);            
             var newUser = new Users()
             {
                 User = user.User,
