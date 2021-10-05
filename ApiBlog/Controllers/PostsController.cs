@@ -40,7 +40,7 @@ namespace ApiBlog.Controllers
             return Ok(_mapper.Map<PostsResponseDto>(await _postsService.AddPost(_mapper.Map<Posts>(post), HttpContext.Session.GetString("user"), HttpContext.Session.GetString("pass"))));
         }
 
-        [HttpPatch("{id}")]
+        [HttpPatch]
         public async Task<IActionResult> UpdatePost([FromBody] PostsUpdateDto post)
         {
             return Ok(_mapper.Map<PostsResponseDto>(await _postsService.UpdatePost(_mapper.Map<Posts>(post), HttpContext.Session.GetString("user"), HttpContext.Session.GetString("pass"))));

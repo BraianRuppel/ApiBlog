@@ -30,14 +30,20 @@ namespace Repositories
 
         public async Task<Posts> GetPostById(Guid id)
         {
-            //return await _context.Posts.Include(x => x.UpdatedBy).ThenInclude(y => y.Rol).FirstOrDefaultAsync(z => z.Id == id);
-            return await _context.Posts.FirstOrDefaultAsync(z => z.Id == id);
+            return await _context.Posts
+                .Include(x => x.UpdatedBy)
+                    .ThenInclude(y => y.Rol)
+                .Include(z => z.Comments)
+                .FirstOrDefaultAsync(z => z.Id == id);
         }
 
         public async Task<ICollection<Posts>> GetPosts()
         {
-            //return await _context.Posts.Include(x => x.UpdatedBy).ThenInclude(y => y.Rol).ToListAsync();
-            return await _context.Posts.ToListAsync();
+            return await _context.Posts
+                .Include(z => z.Comments)
+                .Include(x => x.UpdatedBy)
+                    .ThenInclude(y => y.Rol)
+                .ToListAsync();
         }
 
         public async Task<int> UpdatePost(Posts post)

@@ -31,12 +31,12 @@ namespace Repositories
 
         public async Task<Users> GetUserById(Guid id)
         {
-            return await _context.Users.FirstOrDefaultAsync(x => x.Id == id);
+            return await _context.Users.Include(x => x.Rol).FirstOrDefaultAsync(x => x.Id == id);
         }        
 
         public async Task<ICollection<Users>> GetUsers()
         {
-            return await _context.Users.ToListAsync();
+            return await _context.Users.Include(x => x.Rol).ToListAsync();
         }
 
         public async Task<int> UpdateUser()
@@ -46,7 +46,15 @@ namespace Repositories
 
         public async Task<Users> GetUserByUserNameAndPass(string user, string pass)
         {
-            return await _context.Users.Where(u => u.User == user && u.Pass == pass).FirstOrDefaultAsync();
+            return await _context.Users.Where(u => u.User == user && u.Pass == pass).Include(x => x.Rol).FirstOrDefaultAsync();
+        }
+
+        public async Task<bool> GetUserByName(string username)
+        {
+            var foundUser = await _context.Users.Where(u => u.User == username).FirstOrDefaultAsync();
+            if (foundUser == null)
+                return false;
+            return true;
         }
     }
 }

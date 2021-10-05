@@ -140,7 +140,7 @@ namespace Services
             var postToUpdate = await _postsRepository.GetPostById(post.Id);
 
             if (postToUpdate == null)
-                throw new Exception();
+                throw new Exception("No se encuentra el post");
 
             if (givenUser.Rol.TipoRol == TipoRol.Editor)
             {
@@ -151,7 +151,9 @@ namespace Services
                         postToUpdate.Status = post.Status;
                         if (post.Status == EstadoPost.Published)
                             postToUpdate.PublishedDate = DateTime.Now;
-                    }                        
+                    }
+                    else
+                        throw new Exception("Usted no puede updatear a ese estado");
                 }
                 postToUpdate.Activo = post.Activo;
             }
@@ -161,6 +163,8 @@ namespace Services
                 {
                     if (post.Status == EstadoPost.Pending || post.Status == EstadoPost.Submitted)
                         postToUpdate.Status = post.Status;
+                    else
+                        throw new Exception("Usted no puede updatear a ese estado");
                 }
                 postToUpdate.Tittle = post.Tittle;
                 postToUpdate.Post = post.Post;

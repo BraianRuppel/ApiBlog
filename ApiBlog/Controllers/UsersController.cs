@@ -67,8 +67,8 @@ namespace ApiBlog.Controllers
         [HttpGet("logout")]
         public async Task<IActionResult> Logout()
         {
-            HttpContext.Session.SetString("user", null);
-            HttpContext.Session.SetString("pass", null);
+            HttpContext.Session.SetString("user", "");
+            HttpContext.Session.SetString("pass", "");
 
             return Ok();
         }

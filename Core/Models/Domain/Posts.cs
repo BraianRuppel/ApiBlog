@@ -1,5 +1,6 @@
 ﻿using Models.Enumeration;
 using System;
+using System.Collections.Generic;
 
 namespace Models.Domain
 {
@@ -15,6 +16,7 @@ namespace Models.Domain
         public Users UpdatedBy { get; set; }
         public DateTime PublishedDate { get; set; }
         public bool Activo { get; set; }
+        public ICollection<Comments> Comments { get; set; }
 
         public void Update(Posts post)
         {

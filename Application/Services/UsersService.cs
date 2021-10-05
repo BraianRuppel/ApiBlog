@@ -21,13 +21,8 @@ namespace Services
 
         public async Task<Users> AddUser(Users user, Guid rolId)
         {
-            var users = _usersRepository.GetUsers();
-
-            foreach (Users u in users.Result)//Validacion de nombre en uso
-            {
-                if (u.User == user.User)
-                    throw new Exception("El nombre ya esta en uso");
-            }
+            if (await _usersRepository.GetUserByName(user.User))
+                throw new Exception("El nombre del usuario ya existe");
 
             var userRol = await _rolesRepository.GetRolById(rolId);            
             var newUser = new Users()
@@ -57,7 +52,8 @@ namespace Services
 
         public async Task<ICollection<Users>> GetUsers()
         {
-            return await _usersRepository.GetUsers();
+            var users = await _usersRepository.GetUsers();
+            return users;
         }
                 
         public async Task<Users> UpdateUser(Users user, Guid rolId)
@@ -70,7 +66,7 @@ namespace Services
             userToUpdate.Rol = await _rolesRepository.GetRolById(rolId);
 
             await _usersRepository.UpdateUser();
-            return user;
+            return userToUpdate;
         }
 
         public async Task<Users> Login(string user, string pass)
